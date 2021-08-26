@@ -84,6 +84,6 @@ systemctl disable v2ray_iptable.service
 # 
 chmod +x /etc/rc.local
 systemctl start rc-local
-systemctl status rc-local
+systemctl status rc-local --no-pager
 
 echo "install success"
