@@ -392,6 +392,9 @@ CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
 AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
 NoNewPrivileges=true
 Environment=V2RAY_LOCATION_ASSET=/usr/local/share/v2ray/
+Environment=V2RAY_BUF_READV=enable
+Environment=V2RAY_CONF_GEOLOADER=memconservative
+
 ExecStart=/usr/local/bin/v2ray -config /etc/v2ray/config.json
 LimitNPROC=500
 LimitNOFILE=1000000
