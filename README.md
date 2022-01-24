@@ -127,8 +127,7 @@ sudo supervisorctl restart v2ray.fun
 因为目前是源码方式运行，暂不提供按特定版本更新的特性，需要手动登录后台ssh来更新，参考一下步骤（具体更新内容见TG群）：
 
 ```
-sudo supervisorctl stop v2ray.fun
 sudo git pull
 sudo pip3 install -r script/requirements.txt
-sudo supervisorctl start v2ray.fun
+sudo supervisorctl restart v2ray.fun
 ```
