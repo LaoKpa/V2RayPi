@@ -22,3 +22,10 @@ class V2rayDefaultPath:
             return '/usr/local/etc/v2ray/config.json'
         else:
             return '/etc/v2ray/config.json'
+
+    @classmethod
+    def asset_path(cls) -> str:
+        if sys.platform == 'darwin':
+            return '/usr/local/share/v2ray-core/'
+        else:
+            return '/usr/local/share/v2ray/'

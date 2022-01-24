@@ -273,12 +273,12 @@
                 $("#update").hide();
             }
             else {
-                message("已发布更新版本，如需升级请点击更新完成升级");
+                message("已发布新版本，点击升级按钮更新");
                 $("#check_update").hide();
                 $("#update").show();
             }
         }).fail(function () {
-            message("检查失败")
+            message("检查失败");
         });
     }
 

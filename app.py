@@ -1,11 +1,12 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
+
 from flask import Flask, render_template, jsonify, request, Response
 from flask_basicauth import BasicAuth
-from core.keys import Keyword as K
-from core.core_service import CoreService
 
+from core.core_service import CoreService
+from core.keys import Keyword as K
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 os.chdir(dir_path)
@@ -83,7 +84,7 @@ def check_v2ray_new_ver_api():
 
 @app.route('/update_v2ray')
 def update_v2ray_api():
-    success = CoreService.v2ray.update()
+    success = CoreService.update_v2ray()
     result = K.failed
     if success:
         result = K.ok
@@ -197,6 +198,30 @@ def delete_node_api():
     index = int(index)
     CoreService.delete_node(url, index)
     return jsonify({K.result: K.ok})
+
+@app.route('/check_new_geo_data')
+def check_geo_data_api():
+    result = K.failed
+    version = ''
+    try:
+        version = CoreService.check_new_geo_data()
+        result = K.ok
+    except:
+        pass
+
+    return jsonify({K.version: version,
+                    K.result: result})
+
+@app.route('/update_geo_data')
+def update_geo_data_api():
+    result = K.failed
+    try:
+        CoreService.update_geo_data()
+        result = K.ok
+    except:
+        pass
+
+    return jsonify({K.result: result})
 
 @app.route('/get_advance_config')
 def get_advance_config_api():

@@ -9,6 +9,9 @@ import subprocess
 import requests
 import sys
 import os
+import tempfile
+import shutil
+
 from typing import List
 from .v2ray_user_config import V2RayUserConfig
 from .v2ray_config import V2RayConfig
@@ -86,6 +89,32 @@ class V2rayController:
     def enable_iptables(self):
         subprocess.check_output("bash ./script/config_iptable.sh", shell=True)
         subprocess.check_output("systemctl enable v2ray_iptable.service", shell=True)
+
+    def check_new_geo_data(self, url) -> str:
+        headers = requests.head(url + '/latest').headers
+        dest_url = headers['location']
+        version = dest_url.split('/')[-1]
+        return version
+
+    def update_geo_data(self, url):
+        geoip_url = url + '/latest/download/geoip.dat'
+        r = requests.get(geoip_url)
+        geoip = ''
+        with tempfile.NamedTemporaryFile(delete=False) as f:
+            f.write(r.content)
+            geoip = f.name
+
+        geosite_url = url + '/latest/download/geosite.dat'
+        r = requests.get(geosite_url)
+        geosite = ''
+        with tempfile.NamedTemporaryFile(delete=False) as f:
+            f.write(r.content)
+            geosite = f.name
+
+        shutil.move(geoip, V2rayDefaultPath.asset_path() + 'geoip.dat')
+        shutil.move(geosite, V2rayDefaultPath.asset_path() + 'geosite.dat')
+
+        self.restart()
 
 class DockerV2rayController(V2rayController):
     def start(self) -> bool:

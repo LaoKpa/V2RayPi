@@ -140,7 +140,7 @@
                 <tr>
                     <td colspan="6">
                         <div class="mdui-row mdui-typo mdui-valign">
-                            <h5 class="mdui-col-xs-2">路由规则</h5>
+                            <h5 class="mdui-col-xs-2">自定义路由规则</h5>
                             <h6 class="mdui-typo-caption-opacity mdui-col-xs-8">仅「智能分流」或「全局代理」模式下生效</h6>
                         </div>
                     </td>
@@ -229,6 +229,33 @@
                             <input class="rule_enable" type="checkbox" checked/>
                             <i class="mdui-switch-icon"></i>
                         </label>
+                    </td>
+                </tr>
+                <tr class="mdui-color-grey-100"><td colspan="6"></td></tr>
+                <tr>
+                    <td colspan="6">
+                        <div class="mdui-row mdui-typo mdui-valign">
+                            <h5 class="mdui-col-xs-2">更新 GEO 数据库</h5>
+                            <h6 class="mdui-typo-caption-opacity mdui-col-xs-8">从 https://github.com/Loyalsoldier/v2ray-rules-dat 更新最新数据库 </h6>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>当前版本</td>
+                    <td colspan="5" id="geo_data_current_ver"></td>
+                </tr>
+                <tr>
+                    <td>最新版本</td>
+                    <td colspan="5">
+                        <div class="mdui-row mdui-typo mdui-valign">
+                            <div id="geo_data_new_ver" class="mdui-col-sm-3 mdui-text-color-blue"></div>
+                            <div id="check_geo_data" class="mdui-col-sm-3">
+                                <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple" onclick="check_geo_data()">查询</button>
+                            </div>
+                            <div id="update_geo_data" class="mdui-col-sm-3" style="display: none">
+                                <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple" onclick="update_geo_data()">更新</button>
+                            </div>
+                        </div>
                     </td>
                 </tr>
                 <tr class="mdui-color-grey-100"><td colspan="6"></td></tr>
@@ -563,6 +590,13 @@
             }, 300);
         });
 
+        // geo data
+        current_geo_version = g_config_local['geo_data']['current_version']
+        if (current_geo_version === "") {
+            current_geo_version = "[内置版本]";
+        }
+        $("#geo_data_current_ver").html(current_geo_version);
+
         // mux
         var enable_mux = g_config_local['enable_mux'];
         $("#enable_mux").prop('checked', enable_mux);
@@ -841,6 +875,44 @@
             rule_contents.attr('placeholder', 'geosite:cn\ngoogle.com');
         }
         mdui.mutation();
+    }
+
+    function check_geo_data() {
+        message("正在查询...");
+        $.get("/check_new_geo_data").done(function (data) {
+            var new_version = data["version"];
+            $("#geo_data_new_ver").html(new_version);
+
+            var current_version = $("#geo_data_current_ver").html();
+            if (new_version === current_version) {
+                message("当前已是最新版本无需更新");
+                $("#check_geo_data").show();
+                $("#update_geo_data").hide();
+            }
+            else {
+                message("已发布新版本，可更新");
+                $("#check_geo_data").hide();
+                $("#update_geo_data").show();
+            }
+        }).fail(function () {
+            message("检查失败");
+        });
+    }
+
+    function update_geo_data() {
+        pop_toast("正在更新数据库...");
+        $.get("/update_geo_data").done(function (data) {
+            if (check_result(data)) {
+                update_toast("数据库更新成功")
+            }
+            else {
+                update_toast("数据库更新失败")
+            }
+        }).always(function () {
+            close_toast();
+            refresh_remote();
+            check_geo_data();
+        });
     }
 
     var g_log_levels = ['debug', 'info', 'warning', 'error', 'none'];

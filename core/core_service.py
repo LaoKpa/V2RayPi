@@ -159,6 +159,31 @@ class CoreService:
         return result
 
     @classmethod
+    def update_v2ray(cls) -> bool:
+        result = True
+        result = cls.v2ray.update()
+        if result:
+            if cls.user_config.advance_config.geo_data.current_version != '':
+                cls.update_geo_data()
+
+        return result
+
+    @classmethod
+    def check_new_geo_data(cls) -> str:
+        check_url = cls.user_config.advance_config.geo_data.check_url
+        new_version = cls.v2ray.check_new_geo_data(check_url)
+        return new_version
+
+    @classmethod
+    def update_geo_data(cls):
+        check_url = cls.user_config.advance_config.geo_data.check_url
+        new_version = cls.v2ray.check_new_geo_data(check_url)
+
+        cls.v2ray.update_geo_data(check_url)
+        cls.user_config.advance_config.geo_data.current_version = new_version
+        cls.user_config.save()
+
+    @classmethod
     def apply_advance_config(cls, config:dict):
         result = True
         new_advance = cls.user_config.advance_config.load_data(config)

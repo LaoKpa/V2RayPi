@@ -67,12 +67,18 @@ class V2RayUserConfig(BaseDataItem):
                 self.timeout = 1.0
                 self.last_switch_time = ''
 
+        class GeoData:
+            def __init__(self):
+                self.check_url = 'https://github.com/Loyalsoldier/v2ray-rules-dat/releases'
+                self.current_version = ''
+
         def __init__(self):
             self.log: V2RayUserConfig.AdvanceConfig.Log = V2RayUserConfig.AdvanceConfig.Log()
             self.inbound : V2RayUserConfig.AdvanceConfig.InBound = V2RayUserConfig.AdvanceConfig.InBound()
             self.dns: V2RayUserConfig.AdvanceConfig.DnsConfig = V2RayUserConfig.AdvanceConfig.DnsConfig()
             self.policys:List[V2RayUserConfig.AdvanceConfig.Policy] = []
             self.auto_detect: V2RayUserConfig.AdvanceConfig.AutoDetectAndSwitch = V2RayUserConfig.AdvanceConfig.AutoDetectAndSwitch()
+            self.geo_data:V2RayUserConfig.AdvanceConfig.GeoData = V2RayUserConfig.AdvanceConfig.GeoData()
             self.proxy_preferred = True
             self.enable_mux = True
             self.block_ad = True
