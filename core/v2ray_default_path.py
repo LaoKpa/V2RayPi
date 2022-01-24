@@ -5,14 +5,14 @@ class V2rayDefaultPath:
     @classmethod
     def access_log(cls) -> str:
         if sys.platform == 'darwin':
-            return path.expanduser('~/Library/Logs/v2ray-core/access.log')
+            return path.expanduser('~/Library/Logs/v2ray/access.log')
         else:
             return '/var/log/v2ray/access.log'
 
     @classmethod
     def error_log(cls) -> str:
         if sys.platform == 'darwin':
-            return path.expanduser('~/Library/Logs/v2ray-core/error.log')
+            return path.expanduser('~/Library/Logs/v2ray/error.log')
         else:
             return '/var/log/v2ray/error.log'
 
@@ -26,6 +26,6 @@ class V2rayDefaultPath:
     @classmethod
     def asset_path(cls) -> str:
         if sys.platform == 'darwin':
-            return '/usr/local/share/v2ray-core/'
+            return '/usr/local/share/v2ray/'
         else:
             return '/usr/local/share/v2ray/'

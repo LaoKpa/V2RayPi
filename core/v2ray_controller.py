@@ -137,22 +137,22 @@ class DockerV2rayController(V2rayController):
 
 class MacOSV2rayController(V2rayController):
     def start(self) -> bool:
-        cmd = "brew services start v2ray-core"
+        cmd = "brew services start v2ray"
         subprocess.check_output(cmd, shell=True).decode('utf-8')
         return self.running()
 
     def stop(self) -> bool:
-        cmd = "brew services stop v2ray-core"
+        cmd = "brew services stop v2ray"
         subprocess.check_output(cmd, shell=True).decode('utf-8')
         return not self.running()
 
     def restart(self) -> bool:
-        cmd = "brew services restart v2ray-core"
+        cmd = "brew services restart v2ray"
         subprocess.check_output(cmd, shell=True).decode('utf-8')
         return self.running()
 
     def update(self) -> bool:
-        update_log = subprocess.check_output("brew upgrade v2ray-core", shell=True).decode('utf-8')
+        update_log = subprocess.check_output("brew upgrade v2ray", shell=True).decode('utf-8')
         ret = update_log.find('built in')
         if ret:
             ret = self.restart()

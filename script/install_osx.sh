@@ -1,8 +1,7 @@
 #!/usr/local/bin/bash
 
-brew install wget curl python3
-brew tap v2ray/v2ray
-brew install v2ray-core
-brew services start v2ray-core
+brew update
+brew install wget curl python3 v2ray
 pip3 install -r requirements.txt
-mkdir -p ~/Library/Logs/v2ray-core/
+mkdir -p ~/Library/Logs/v2ray/
+brew services start v2ray
