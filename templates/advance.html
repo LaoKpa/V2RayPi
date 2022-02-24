@@ -913,7 +913,8 @@
         }).always(function () {
             close_toast();
             refresh_remote();
-            check_geo_data();
+
+            setTimeout(check_geo_data, 2000);
         });
     }
 
