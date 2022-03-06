@@ -12,7 +12,9 @@ export PATH
 
 #install Needed Packages
 yum update -y
-yum install wget curl socat git python3-devel python3-setuptools python3-dev python3-pip openssl libssl-dev ca-certificates supervisor -y
+yum install wget curl socat git python3-devel python3-setuptools python3-dev python3-pip python3-wheel openssl libssl-dev ca-certificates supervisor -y
+pip3 install --upgrade setuptools
+pip3 install wheel
 pip3 install -r requirements.txt
 
 #enable rc.local
