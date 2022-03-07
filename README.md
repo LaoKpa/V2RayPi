@@ -1,8 +1,6 @@
-![logo.png](pic/logo.png)
-
 ## 简介
 
-一个基于 Web 的 V2ray 控制面板，已改造为将树莓派作为旁路由使用，只需要设置好网关，即可代理路由器下所有设备透明翻墙，支持直连\智能分流\全局代理 三种模式，并能自动管理订阅，原理参考 [透明代理(TPROXY)
+将树莓派配置为 V2Ray 透明代理旁路由，只需要主路由设置好网关，即可代理主路由器下所有设备透明科学上网，接入网络的终端不需要做任何设置，只需要连入主路由WiFi或有线即可。支持直连\智能分流\全局代理 三种模式，并能自动管理订阅和各种高级策略设置，原理参考 [透明代理(TPROXY)
 ](https://guide.v2fly.org/app/tproxy.html)，TG讨论组:[https://t.me/v2ray_funpi](https://t.me/v2ray_funpi)
 
 ![1.png](pic/1.png)  
@@ -17,25 +15,28 @@
 
 ## 系统支持
 MacOS  
-Debian Buster  
+Debian  
+Armbian  
+Raspberry Pi OS  
 Ubuntu  
 CentOS  
-Raspberry Pi OS (based on Debian Buster)  
-Armbian (based on Debian Buster)  
+Docker  
 
 ## 硬件支持
-Mac  
-Raspberry Pi 4B  
-[ZeroPi](http://wiki.friendlyarm.com/wiki/index.php/ZeroPi)  
-斐讯 N1  
-其他任何运行 Debian Buster 的arm、x86、x64 物理主机/软路由/电视盒子/广告开发板/虚拟机/Docker镜像 
+MacBook 及其他所有能运行MacOS的硬件  
+[Raspberry Pi 4B](https://www.raspberrypi.com/products/raspberry-pi-4-model-b)  
+[ZeroPi](https://wiki.friendlyelec.com/wiki/index.php/ZeroPi)  
+[NanoPi NEO 2](https://wiki.friendlyelec.com/wiki/index.php/NanoPi_NEO2)  
+[NanoPi NEO 3](https://wiki.friendlyelec.com/wiki/index.php/NanoPi_NEO3)  
+[Orange Pi Zero2](http://www.orangepi.cn/Orange%20Pi%20Zero2/index_cn.html)  
+其他任何ARM、x86、x64 PC主机/软路由/电视盒子/开发板/虚拟机/Docker镜像  
 
 ![zeropi_1.jpg](pic/zeropi_1.jpg)  
 
 ![zeropi_2.jpg](pic/zeropi_2.jpg)  
 
 ## 安装方式
-### Mac
+### Mac，不支持透明代理
 ```
 # 安装 brew
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -53,9 +54,9 @@ python3 app.py
 
 ```
 浏览器输入127.0.0.1:1086，即可访问面板  
-浏览器设置 socks5 代理 127.0.0.1:1080，即可使用，Chrome 浏览器推荐使用 SwitchyOmega  
+浏览器设置 socks5 代理 127.0.0.1:1080，即可使用，Chrome 浏览器推荐使用 SwitchyOmega
 
-### Debian Buster / Ubuntu / CentOS
+### Debian / Armbian / Ubuntu / CentOS，支持旁路由透明代理
 ```
 sudo su - root
 cd /usr/local
@@ -65,12 +66,11 @@ cd V2ray.Fun/script
 ```
 
 重启服务
-
 ```
 sudo supervisorctl restart v2ray.fun
 ```
 
-设置树莓派为旁路由，树莓派修改为静态地址192.168.66.200，这里路由器是192.168.66.1
+设置树莓派为旁路由，树莓派修改为静态地址192.168.66.200，这里主路由是192.168.66.1
 ```
 sudo nano /etc/dhcpcd.conf
 
@@ -86,12 +86,12 @@ static domain_name_servers=192.168.66.1
 sudo reboot
 ```
 
-然后设置路由器的DHCP网关为 192.168.66.200
+然后主路由设置的DHCP网关为 192.168.66.200，这里以梅林为例，其他系统类似
 ![router.png](pic/router.png)
 
 配置完成，浏览器输入192.168.66.200:1086，即可访问面板
 
-### Docker
+### Docker，不支持透明代理
 Docker镜像目前支持amd64和arm64平台，感谢[raydoom](https://github.com/raydoom)提供支持，镜像已上传到dockerhub，可直接拉取使用，如需要也可以用根目录下的Dockerfile自行编译镜像
 
 ```
