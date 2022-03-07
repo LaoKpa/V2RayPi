@@ -115,6 +115,9 @@ class CoreService:
 
     @classmethod
     def re_apply_node(cls, restart_auto_detect=True) -> bool:
+        if not cls.user_config.node.add:
+            return True
+
         result = cls.v2ray.apply_node(cls.user_config, cls.node_manager.all_nodes())
         if restart_auto_detect:
             cls.restart_auto_detect()
