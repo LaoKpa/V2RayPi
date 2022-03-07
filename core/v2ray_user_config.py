@@ -42,7 +42,7 @@ class V2RayUserConfig(BaseDataItem):
 
         class DnsConfig:
             def __init__(self):
-                self.default_local = '223.5.5.5'
+                self.default_local = '119.29.29.29'
                 self.default_remote = '8.8.8.8'
                 self.local = ''
                 self.remote = ''
