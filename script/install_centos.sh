@@ -55,7 +55,7 @@ EOF
 touch /etc/supervisor/conf.d/v2raypi.ini
 cat>/etc/supervisor/conf.d/v2raypi.ini<<-EOF
 [program:v2raypi]
-command=/usr/local/V2rayPi/script/start.sh run
+command=/usr/local/V2RayPi/script/start.sh run
 stdout_logfile=/var/log/v2raypi
 autostart=true
 autorestart=true
@@ -79,7 +79,7 @@ Wants=network-online.target
 [Service]
 
 Type=oneshot
-ExecStart=/bin/bash /usr/local/V2rayPi/script/config_iptable.sh
+ExecStart=/bin/bash /usr/local/V2RayPi/script/config_iptable.sh
 
 [Install]
 WantedBy=multi-user.target

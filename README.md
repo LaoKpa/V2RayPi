@@ -43,8 +43,8 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 
 # clone 代码
 cd ~/Documents/
-git clone https://github.com/twotreesus/V2rayPi.git
-cd V2rayPi
+git clone https://github.com/twotreesus/V2RayPi.git
+cd V2RayPi
 
 # 安装依赖
 ./script/install_osx.sh
@@ -60,8 +60,8 @@ python3 app.py
 ```
 sudo su - root
 cd /usr/local
-git clone https://github.com/twotreesus/V2rayPi.git
-cd V2rayPi/script
+git clone https://github.com/twotreesus/V2RayPi.git
+cd V2RayPi/script
 ./install.sh #如果是 CentOS 请执行  ./install_centos.sh
 ```
 
@@ -106,7 +106,7 @@ docker run -d --restart=unless-stopped --name=v2ray-funpi -p 1080:1080 -p 1086:1
 修改配置文件，以设置面板用户名、密码，端口，其他设置均可在面板内完成，ps：配置文件内不支持注释
 
 ```
-sudo nano /usr/local/V2rayPi/config/app_config.json
+sudo nano /usr/local/V2RayPi/config/app_config.json
 
 {
     "py/object": "core.app_config.AppConfig",
