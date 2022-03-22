@@ -52,11 +52,11 @@ cat>>/etc/supervisor/supervisord.conf<<EOF
 [include]
 files = /etc/supervisor/conf.d/*.ini
 EOF
-touch /etc/supervisor/conf.d/v2ray.fun.ini
-cat>/etc/supervisor/conf.d/v2ray.fun.ini<<-EOF
-[program:v2ray.fun]
-command=/usr/local/V2ray.Fun/script/start.sh run
-stdout_logfile=/var/log/v2ray.fun
+touch /etc/supervisor/conf.d/v2raypi.ini
+cat>/etc/supervisor/conf.d/v2raypi.ini<<-EOF
+[program:v2raypi]
+command=/usr/local/V2rayPi/script/start.sh run
+stdout_logfile=/var/log/v2raypi
 autostart=true
 autorestart=true
 startsecs=5
@@ -66,7 +66,7 @@ killasgroup=true
 EOF
 
 supervisord -c /etc/supervisor/supervisord.conf
-supervisorctl restart v2ray.fun
+supervisorctl restart v2raypi
 
 # ip table
 echo net.ipv4.ip_forward=1 >> /etc/sysctl.conf && sysctl -p
@@ -79,7 +79,7 @@ Wants=network-online.target
 [Service]
 
 Type=oneshot
-ExecStart=/bin/bash /usr/local/V2ray.Fun/script/config_iptable.sh
+ExecStart=/bin/bash /usr/local/V2rayPi/script/config_iptable.sh
 
 [Install]
 WantedBy=multi-user.target

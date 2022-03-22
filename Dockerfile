@@ -2,22 +2,20 @@ FROM v2fly/v2fly-core
 
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 
-RUN mkdir -p /usr/local/V2ray.Fun
-COPY . /usr/local/V2ray.Fun
+RUN mkdir -p /usr/local/V2rayPi
+COPY . /usr/local/V2rayPi
 
 RUN set -ex \
 	&& apk add linux-headers wget gcc g++ python3 python3-dev openssl ca-certificates supervisor \
 	&& wget https://bootstrap.pypa.io/get-pip.py \
 	&& python3 get-pip.py \
-	&& pip3 install -r /usr/local/V2ray.Fun/script/requirements.txt -i http://mirrors.aliyun.com/pypi/simple --trusted-host mirrors.aliyun.com \
+	&& pip3 install -r /usr/local/V2rayPi/script/requirements.txt -i http://mirrors.aliyun.com/pypi/simple --trusted-host mirrors.aliyun.com \
 	&& apk del wget gcc g++ python3-dev
 
 RUN mkdir /etc/supervisor.d \
-	&& cp /usr/local/V2ray.Fun/script/docker/v2ray.ini /etc/supervisor.d/v2ray.ini
+	&& cp /usr/local/V2rayPi/script/docker/v2ray.ini /etc/supervisor.d/v2ray.ini
 
 EXPOSE 1080
 EXPOSE 1086
 
-CMD supervisord -c /etc/supervisord.conf && sh /usr/local/V2ray.Fun/script/start.sh run
-
-
+CMD supervisord -c /etc/supervisord.conf && sh /usr/local/V2rayPi/script/start.sh run
