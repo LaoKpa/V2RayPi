@@ -1,7 +1,7 @@
 ## 简介
 
 将树莓派配置为 V2Ray 透明代理旁路由，只需要主路由设置好网关，即可代理主路由器下所有设备透明科学上网，接入网络的终端不需要做任何设置，只需要连入主路由WiFi或有线即可。支持直连\智能分流\全局代理 三种模式，并能自动管理订阅和各种高级策略设置，原理参考 [透明代理(TPROXY)
-](https://guide.v2fly.org/app/tproxy.html)，TG讨论组:[https://t.me/v2ray_funpi](https://t.me/v2ray_funpi)
+](https://guide.v2fly.org/app/tproxy.html)，TG讨论组:[https://t.me/v2raypi](https://t.me/v2raypi)
 
 ![1.png](pic/1.png)  
 
