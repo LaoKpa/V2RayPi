@@ -131,3 +131,11 @@ sudo git pull
 sudo pip3 install -r script/requirements.txt
 sudo supervisorctl restart v2raypi
 ```
+
+## 卸载方式
+
+```
+sudo ./script/remove.sh
+sudo reboot
+
+```
