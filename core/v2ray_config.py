@@ -193,6 +193,8 @@ class Inbound(DontPickleNone):
         def __init__(self):
             self.enabled:bool = True
             self.destOverride = ["http", "tls"]
+            self.excludedDomain:str = "Mijia Cloud"
+
     def __init__(self):
         self.port:int = 0
         self.listen:typing.Optional[str] = None
