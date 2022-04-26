@@ -110,7 +110,7 @@ class ProtocolSocks:
     class Settings(DontPickleNone):
         def __init__(self):
             self.auth = 'noauth'
-            self.udp:typing.Optional[bool] = None
+            self.udp:typing.Optional[bool] = True
             self.ip:typing.Optional[str] = None
             self.userLevel:typing.Optional[int] = None
 
