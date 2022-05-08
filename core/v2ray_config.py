@@ -88,7 +88,8 @@ class ProtocolDokodemoDoor:
         def __init__(self):
             self.address:typing.Optional[str] = None
             self.port:typing.Optional[int] = None
-            self.network:str = NetworkType.tcp_udp.value
+            # fix QUIC support
+            # self.network:str = NetworkType.tcp_udp.value
             self.timeout:typing.Optional[int] = None
             self.followRedirect:bool = True
 
