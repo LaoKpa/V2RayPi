@@ -88,8 +88,7 @@ class ProtocolDokodemoDoor:
         def __init__(self):
             self.address:typing.Optional[str] = None
             self.port:typing.Optional[int] = None
-            # fix QUIC support
-            # self.network:str = NetworkType.tcp_udp.value
+            self.network:str = NetworkType.tcp_udp.value
             self.timeout:typing.Optional[int] = None
             self.followRedirect:bool = True
 
@@ -397,10 +396,11 @@ class V2RayConfig(DontPickleNone):
         settings = ProtocolDokodemoDoor.Settings()
         dokodemo_door.settings = settings
 
-        stream_settings = StreamSettings()
-        stream_settings.sockopt = StreamSettings.SockOpt()
-        stream_settings.sockopt.tproxy = StreamSettings.SockOpt.TProxy.tproxy.value
-        dokodemo_door.streamSettings = stream_settings
+        # fix QUIC support
+        # stream_settings = StreamSettings()
+        # stream_settings.sockopt = StreamSettings.SockOpt()
+        # stream_settings.sockopt.tproxy = StreamSettings.SockOpt.TProxy.tproxy.value
+        # dokodemo_door.streamSettings = stream_settings
 
         return dokodemo_door
 
