@@ -2,6 +2,7 @@
 from enum import Enum
 import typing
 import socket
+import sys
 from typing import List
 from typing import Dict
 from .package import jsonpickle
@@ -110,7 +111,8 @@ class ProtocolSocks:
     class Settings(DontPickleNone):
         def __init__(self):
             self.auth = 'noauth'
-            self.udp:typing.Optional[bool] = True
+            if sys.platform != 'darwin':
+                self.udp:typing.Optional[bool] = True
             self.ip:typing.Optional[str] = None
             self.userLevel:typing.Optional[int] = None
 
@@ -162,6 +164,22 @@ class StreamSettings(DontPickleNone):
     class Security(Enum):
         none = 'none'
         tls = 'tls'
+    class TCP:
+        def __init__(self):
+            self.header = { }
+
+        def _makeRequest(self):
+            if not 'request' in self.header:
+                self.header['request'] = {}
+        def setHeaderType(self, type):
+            self.header['type'] = type
+        def setHost(self, host):
+            self._makeRequest()
+            self.header['request']['headers'] = { 'Host' : [ host, ] }
+        def setPath(self, path):
+            self._makeRequest()
+            self.header['request']['path'] = [ path, ]
+
     class WebSocket:
         def __init__(self):
             self.path:str = '/'
@@ -184,6 +202,7 @@ class StreamSettings(DontPickleNone):
     def __init__(self):
         self.network:typing.Optional[str] = None
         self.security:typing.Optional[str] = None
+        self.tcpSettings:typing.Optional[StreamSettings.TCP] = None
         self.wsSettings:typing.Optional[StreamSettings.WebSocket] = None
         self.tlsSettings:typing.Optional[StreamSettings.TLS] = None
         self.sockopt:typing.Optional[StreamSettings.SockOpt] = None
@@ -296,8 +315,9 @@ class V2RayConfig(DontPickleNone):
         config.log.loglevel = Log.Level[user_config.advance_config.log.level].name
 
         # inbounds
-        dokodemo_door = cls._make_inbound_dokodemo_door()
-        config.add_inbound(dokodemo_door)
+        if sys.platform != 'darwin':
+            dokodemo_door = cls._make_inbound_dokodemo_door()
+            config.add_inbound(dokodemo_door)
         if user_config.advance_config.inbound.enable_socks_proxy :
             socks = cls._make_inbound_socks(user_config.advance_config.inbound.socks_port())
             config.add_inbound(socks)
@@ -446,10 +466,17 @@ class V2RayConfig(DontPickleNone):
 
         stream_settings = proxy.streamSettings
         stream_settings.network = node.net
-        if node.net == StreamSettings.Network.ws.value:
+        if node.net == StreamSettings.Network.tcp.value:
+            if node.type != 'none':
+                stream_settings.tcpSettings = StreamSettings.TCP()
+                stream_settings.tcpSettings.setHeaderType(node.type)
+                stream_settings.tcpSettings.setHost(node.host)
+                stream_settings.tcpSettings.setPath(node.path)
+        elif node.net == StreamSettings.Network.ws.value:
             stream_settings.wsSettings = StreamSettings.WebSocket()
             stream_settings.wsSettings.path = node.path
             stream_settings.wsSettings.setHost(node.host)
+
         if node.tls != StreamSettings.Security.tls.value:
             stream_settings.security = StreamSettings.Security.none.value
         else:
