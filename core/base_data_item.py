@@ -6,6 +6,7 @@ Date:       2020年7月29日  31周星期三 21:45
 Desc:
 """
 import json
+import os
 import os.path
 from .package import jsonpickle
 import collections
@@ -33,6 +34,7 @@ class BaseDataItem:
         raw = jsonpickle.encode(self, indent=4)
         with open(self.filename(), 'w+') as f:
             f.write(raw)
+        os.sync()
 
     def _deep_update(self, dct, merge_dct, add_keys=False):
         dct = dct.copy()
