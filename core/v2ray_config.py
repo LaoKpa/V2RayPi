@@ -190,6 +190,7 @@ class StreamSettings(DontPickleNone):
         def __init__(self):
             self.serverName:str = ''
             self.allowInsecure:bool = False
+            self.alpn = None
     class SockOpt(DontPickleNone):
         class TProxy(Enum):
             redirect = 'redirect'
@@ -453,6 +454,8 @@ class V2RayConfig(DontPickleNone):
         user = ProtocolVMess.Settings.Server.User()
         user.alterId = int(node.aid)
         user.id = node.id
+        if node.scy:
+            user.security = node.scy
 
         server = ProtocolVMess.Settings.Server()
         server.add_user(user)
@@ -463,7 +466,22 @@ class V2RayConfig(DontPickleNone):
         settings.add_server(server)
         proxy.settings = settings
 
+        # stream settings
         stream_settings = proxy.streamSettings
+        if node.tls != StreamSettings.Security.tls.value:
+            stream_settings.security = StreamSettings.Security.none.value
+        else:
+            stream_settings.security = StreamSettings.Security.tls.value
+
+            tls = StreamSettings.TLS()
+            if node.alpn:
+                tls.alpn = [ node.alpn, ]
+            if node.sni:
+                tls.serverName = node.sni
+            else:
+                tls.serverName = node.host
+            stream_settings.tlsSettings = tls
+
         stream_settings.network = node.net
         if node.net == StreamSettings.Network.tcp.value:
             if node.type != 'none':
@@ -475,13 +493,6 @@ class V2RayConfig(DontPickleNone):
             stream_settings.wsSettings = StreamSettings.WebSocket()
             stream_settings.wsSettings.path = node.path
             stream_settings.wsSettings.setHost(node.host)
-
-        if node.tls != StreamSettings.Security.tls.value:
-            stream_settings.security = StreamSettings.Security.none.value
-        else:
-            stream_settings.security = StreamSettings.Security.tls.value
-            stream_settings.tlsSettings = StreamSettings.TLS()
-            stream_settings.tlsSettings.serverName = node.host
 
         proxy.mux = Outbound.Mux()
         proxy.mux.enabled = enable_mux

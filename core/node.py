@@ -24,6 +24,9 @@ class Node(BaseDataItem):
         self.tls = None
         self.type = None
         self.v = None
+        self.scy = None
+        self.sni = None
+        self.alpn = None
 
     @property
     def link(self):
