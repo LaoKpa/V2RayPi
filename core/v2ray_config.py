@@ -35,6 +35,14 @@ class Log:
         self.error:str = V2rayDefaultPath.error_log()
         self.loglevel:str = self.Level.warning.value
 
+class DomainStrategy(Enum):
+    AsIs = 'AsIs'
+    UseIP = 'UseIP'
+    UseIPv4 = 'UseIPv4'
+    UseIPv6 = 'UseIPv6'
+    IPIfNonMatch = 'IPIfNonMatch'
+    IPOnDemand = 'IPOnDemand'
+
 class DNS(DontPickleNone):
     class Server(DontPickleNone):
         def __init__(self):
@@ -46,6 +54,7 @@ class DNS(DontPickleNone):
             self.domains.append(domain)
 
     def __init__(self):
+        self.queryStrategy = DomainStrategy.UseIPv4.value
         self.hosts:typing.Optional[Dict] = None
         self.servers:List = []
 
@@ -96,13 +105,8 @@ class ProtocolDokodemoDoor:
 class ProtocolFreedom:
     type = ProtocolType.freedom.value
     class Settings(DontPickleNone):
-        class DomainStrategy(Enum):
-            AsIs = 'AsIs'
-            UseIP = 'UseIP'
-            UseIPv4 = 'UseIPv4'
-            UseIPv6 = 'UseIPv6'
         def __init__(self):
-            self.domainStrategy = self.DomainStrategy.UseIP.value
+            self.domainStrategy = DomainStrategy.UseIPv4.value
             self.redirect:typing.Optional[str] = None
             self.userLevel:typing.Optional[int] = None
 
@@ -186,7 +190,7 @@ class StreamSettings(DontPickleNone):
             self.headers:Dict[str, str] = {}
         def setHost(self, host:str):
             self.headers['Host'] = host
-    class TLS:
+    class TLS(DontPickleNone):
         def __init__(self):
             self.serverName:str = ''
             self.allowInsecure:bool = False
@@ -240,10 +244,6 @@ class Outbound(DontPickleNone):
         self.tag: str = ''
 
 class Routing:
-    class DomainStrategy(Enum):
-        AsIs = 'AsIs'
-        IPIfNonMatch = 'IPIfNonMatch'
-        IPOnDemand = 'IPOnDemand'
     class Rule(DontPickleNone):
         def __init__(self):
             self.type = 'field'
@@ -273,7 +273,7 @@ class Routing:
             self.protocol.append(protocol)
 
     def __init__(self):
-        self.domainStrategy:str = self.DomainStrategy.IPOnDemand.value
+        self.domainStrategy:str = DomainStrategy.IPOnDemand.value
         self.rules:List[Routing.Rule] = []
 
 class Tags(Enum):
