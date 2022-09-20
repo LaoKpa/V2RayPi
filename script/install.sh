@@ -37,7 +37,7 @@ mkdir -p /etc/v2ray/
 touch /etc/v2ray/config.json
 chmod 644 /etc/v2ray/config.json
 mkdir -p /var/log/v2ray/
-bash update_v2ray.sh
+bash update_v2ray.sh --version v4.45.0
 
 #configure Supervisor
 mkdir /etc/supervisor
