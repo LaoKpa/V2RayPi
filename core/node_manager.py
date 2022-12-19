@@ -127,6 +127,9 @@ class NodeManager(BaseDataItem):
 
         for url in self.subscribes.keys():
             group: NodeGroup = self.subscribes[url]
+            if not len(group.nodes):
+                continue
+
             node_results = self.ping_test_group(group.nodes)
             group_result = {
                 K.subscribe : url,
