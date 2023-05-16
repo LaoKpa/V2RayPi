@@ -398,6 +398,10 @@ class Pickler(object):
         # Support objects with __getstate__(); this ensures that
         # both __setstate__() and __getstate__() are implemented
         has_getstate = hasattr(obj, '__getstate__')
+
+        # Python 3.11 introduced a default implementation for these functions that does not match expectations,
+        # So make a quick fix
+        has_getstate = False
         # not using has_method since __getstate__() is handled separately below
 
         if has_class:
